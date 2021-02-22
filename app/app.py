@@ -30,6 +30,12 @@ def update(path):
     print(col.find({"path": path}))
     return render_template("update.html", path=path)
 
+@app.route("/delete/<path>", methods=["GET", "POST"])
+def delete(path):
+    col.delete_one( { "path" : path } )
+    message = 'Image has been deleted !'
+    return render_template("index.html", message=message)
+
 @app.route("/upload", methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
@@ -65,12 +71,12 @@ def search():
         }
 
     if 'filters' in response:
-            for key, value in response['filters'].items():
-                if key in filtersDic:
-                    newFilter = filtersDic[key].replace ( '{}', str(value) )
-                    search.append( ast.literal_eval( newFilter ))
-                else:
-                    search = []
+        for key, value in response['filters'].items():
+            if key in filtersDic:
+                newFilter = filtersDic[key].replace ( '{}', str(value) )
+                search.append( ast.literal_eval( newFilter ))
+            else:
+                search = []
 
         if len(search):
             response = [ a for a in col.find({
