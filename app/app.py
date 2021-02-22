@@ -13,22 +13,37 @@ app = Flask(__name__)
 app.config.from_object(DevelopmentConfig)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-client = pymongo.MongoClient("mongodb+srv://user1:2NvZYRipodUWsipy@cluster1.swpth.mongodb.net/sample_airbnb?retryWrites=true&w=majority")
+client = pymongo.MongoClient(
+    "mongodb+srv://user1:2NvZYRipodUWsipy@cluster1.swpth.mongodb.net/sample_airbnb?retryWrites=true&w=majority")
 db = client.chal48_passion_froid
 col = db.picture
+
 
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+
 @app.route("/", methods=["GET"])
 def homepage():
     return render_template("index.html")
 
+
 @app.route("/update/<path>", methods=["GET", "POST"])
 def update(path):
-    print(col.find({"path": path}))
-    return render_template("update.html", path=path)
+    if request.method == 'GET':
+        obj = col.find_one({"path": path})
+        if obj:
+            return render_template("update.html", path=path, obj=obj)
+        elif not obj:
+            return redirect(url_for('create'))
+        print('ERROR')
+
+@app.route("/create", methods=["GET","POST"])
+def create():
+    return render_template("create.html")
+    
+
 
 @app.route("/upload", methods=['GET', 'POST'])
 def upload_file():
@@ -54,23 +69,23 @@ def search():
     search = []
 
     filtersDic = {
-            'name' :                '{ "name" : {"$regex": \'.*{}.*\' }}',
-            'type' :                '{ "type" : {"$regex": \'.*{}.*\' }}',
-            'credits' :             '{ "credits" : {"$regex": \'.*{}.*\' }}',
-            'with_product' :        '{ "with_product" : {"$eq" :  {} }}', 
-            'with_humans' :         '{ "with_humans" :  {"$eq" :  {} }}', 
-            'institutional' :       '{ "institutional" : {"$eq" :  {} }}',
-            'format' :              '{ "format" : {"$eq" :   {} }}', 
-            'tags' :                '{ "tags" :         {"$in" :  {} }}', 
+            'name':                '{ "name" : {"$regex": \'.*{}.*\' }}',
+            'type':                '{ "type" : {"$regex": \'.*{}.*\' }}',
+            'credits':             '{ "credits" : {"$regex": \'.*{}.*\' }}',
+            'with_product':        '{ "with_product" : {"$eq" :  {} }}',
+            'with_humans':         '{ "with_humans" :  {"$eq" :  {} }}',
+            'institutional':       '{ "institutional" : {"$eq" :  {} }}',
+            'format':              '{ "format" : {"$eq" :   {} }}',
+            'tags':                '{ "tags" :         {"$in" :  {} }}',
         }
 
     if 'filters' in response:
-            for key, value in response['filters'].items():
-                if key in filtersDic:
-                    newFilter = filtersDic[key].replace ( '{}', str(value) )
-                    search.append( ast.literal_eval( newFilter ))
-                else:
-                    search = []
+        for key, value in response['filters'].items():
+            if key in filtersDic:
+                newFilter = filtersDic[key].replace('{}', str(value))
+                search.append(ast.literal_eval(newFilter))
+            else:
+                search = []
 
         if len(search):
             response = [ a for a in col.find({

@@ -1,15 +1,23 @@
-{% extends "base.html" %} {% block title %}Update{% endblock %} {% block link %}
-{% endblock %} {% block body %}
-<img src="{{url_for('static', filename=path)}}" alt="" height="100px" />
+{% extends "base.html" %} {% block title %}Créer{% endblock %} {% block link
+%}{% endblock %} {% block body %}
 
 <div id="upload" class="row">
-    <h2 class="center-align">Modifier</h2>
-  <div class="col s10 offset-s1 center-align" >
+  <div class="col s10 offset-s1">
+    <h2>Ajouter</h2>
+
     <form enctype="multipart/form-data" id="myform" action="" method="POST">
       <div class="row">
+        <div class="input-field">
+          <div>Image :</div>
+          <input
+            type="file"
+            id="picture"
+            name="picture"
+            accept="image/png, image/jpeg"
+          />
+        </div>
         <div class="input-field col s5">
           <input
-            value="{{ obj.name }}"
             id="picture_name"
             name="picture_name"
             type="text"
@@ -25,7 +33,6 @@
             name="picture_type"
             type="text"
             class="validate"
-            value="{{ obj.type }}"
           />
           <label for="picture_type">Type de l'image</label>
         </div>
@@ -34,16 +41,6 @@
       <div class="row">
         <div class="col s2">
           <label>
-            {% if obj.with_product == true %}
-            <input
-              type="checkbox"
-              name="with_product"
-              id="with_product"
-              name="with_product"
-              checked
-            />
-            <span>Avec produit:</span>
-            {% elif obj.with_product == false %}
             <input
               type="checkbox"
               name="with_product"
@@ -51,60 +48,34 @@
               name="with_product"
             />
             <span>Avec produit:</span>
-            {% endif %}
           </label>
         </div>
 
         <div class="col s2">
           <label>
-            {% if obj.with_human == true %}
             <input type="checkbox" id="with_human" name="with_human" checked />
             <span>Avec humain:</span>
-            {% elif obj.with_human == false %}
-            <input type="checkbox" id="with_human" name="with_human" />
-            <span>Avec humain:</span>
-            {% endif %}
           </label>
         </div>
 
         <div class="col s2">
           <label>
-            {% if obj.institutional == true %}
-            <input type="checkbox" id="is_instit" name="is_instit" checked />
-            <span>Photo institutionnelle:</span>
-            {% elif obj.institutional == false %}
             <input type="checkbox" id="is_instit" name="is_instit" />
             <span>Photo institutionnelle:</span>
-            {% endif %}
           </label>
         </div>
 
         <div class="col s2">
           <label>
-            {% if obj.format == true %}
-            <input
-              type="checkbox"
-              id="is_vertical"
-              name="is_vertical"
-              checked
-            />
-            <span>Format vertical:</span>
-            {% elif obj.format == false %}
             <input type="checkbox" id="is_vertical" name="is_vertical" />
             <span>Format vertical:</span>
-            {% endif %}
           </label>
         </div>
 
         <div class="col s2">
           <label>
-            {% if obj.user_permissions == true %}
-            <input type="checkbox" id="is_limited" name="is_limited" checked />
-            <span>Droit utilisation limitée:</span>
-            {% elif obj.user_permissions == false %}
             <input type="checkbox" id="is_limited" name="is_limited" />
             <span>Droit utilisation limitée:</span>
-            {% endif %}
           </label>
         </div>
       </div>
@@ -116,7 +87,6 @@
             id="picture_author"
             type="text"
             class="validate"
-            value="{{obj.credits}}"
           />
           <label for="picture_author">Crédit de l'image:</label>
         </div>
@@ -127,7 +97,6 @@
             id="picture_copyright"
             type="text"
             class="validate"
-            value="{{obj.copyright}}"
           />
           <label for="picture_copyright">Copyright:</label>
         </div>
@@ -140,7 +109,6 @@
             id="picture_date"
             type="text"
             class="validate"
-            value="{{obj.end_date}}"
           />
           <label for="picture_date">Date de l'image:</label>
         </div>
@@ -149,23 +117,13 @@
       <div class="row">
         <div class="input-field col s10">
           <h4>Tags:</h4>
-          <ul>
-            {%for tag in obj.tags %}
-            <li>{{tag}}</li>
-            {%endfor%}
-          </ul>
         </div>
       </div>
-      <input
-        type="file"
-        id="picture"
-        name="picture"
-        accept="image/png, image/jpeg"
-      />
+
       <button class="btn waves-effect waves-light" type="submit">
         <i class="material-icons right">Enregistrer</i>
       </button>
     </form>
   </div>
 </div>
-{% endblock body %} {% block js %} {% endblock %}
+{% endblock body %} {% block js %}{% endblock %}
