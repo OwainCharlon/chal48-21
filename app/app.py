@@ -14,8 +14,8 @@ app.config.from_object(DevelopmentConfig)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 client = pymongo.MongoClient("mongodb+srv://user1:2NvZYRipodUWsipy@cluster1.swpth.mongodb.net/sample_airbnb?retryWrites=true&w=majority")
-#db = client.nomdb
-#col = db.nomColonne
+db = client.chal48_passion_froid
+col = db.picture
 
 def allowed_file(filename):
     return '.' in filename and \
