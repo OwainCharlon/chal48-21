@@ -1,1 +1,133 @@
-Helloo there
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <script src="jquery-3.5.1.min.js"></script>
+</head>
+<body>
+	
+    <nav>
+        <div class="nav-wrapper">
+          <a href="#" class="brand-logo center">Passion froid</a>
+          <ul id="nav-mobile" class="left hide-on-med-and-down">
+            <li><a href="#upload">Insertion</a></li>
+            <li><a href="#search">Recherche</a></li>
+          </ul>
+        </div>
+    </nav>
+
+    <div id="upload" class="row">   
+        <div class="col s10 offset-s1"> 
+            <form>
+
+                <div class="row">
+                    <div class="input-field col s5">
+                        <input placeholder="Nom de l'image" id="picture_name" type="text" class="validate">
+                        <label for="picture_name">Nom de l'image</label>
+                    </div>
+    
+                    <div class="input-field col s5">
+                        <input placeholder="Type d'image" id="picture_type" type="text" class="validate">
+                        <label for="description">Type de l'image</label>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col s2">
+                        <label>
+                          <input type="checkbox" />
+                          <span>Avec produit:</span>
+                        </label>
+                    </div>
+    
+                    <div class="col s2">
+                        <label>
+                          <input type="checkbox" />
+                          <span>Avec humain:</span>
+                        </label>
+                    </div>
+    
+                    <div class="col s2">
+                        <label>
+                          <input type="checkbox" />
+                          <span>Photo institutionnelle:</span>
+                        </label>
+                    </div>
+    
+                    <div class="col s2">
+                        <label>
+                          <input type="checkbox" />
+                          <span>Format vertical:</span>
+                        </label>
+                    </div>
+    
+                    <div class="col s2">
+                        <label>
+                          <input type="checkbox" />
+                          <span>Droit utilisation limitée:</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s5">
+                        <input placeholder="Crédit de la photo" id="picture_author" type="text" class="validate">
+                        <label for="picture_author">Crédit de l'image:</label>
+                    </div>
+    
+    
+                    <div class="input-field col s5">
+                        <input placeholder="Copyrigth" id="picture_copyright" type="text" class="validate">
+                        <label for="picture_copyright">Copyright:</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s10">
+                        <input placeholder="Date de la photo" id="picture_date" type="text" class="validate">
+                        <label for="picture_date">Date de l'image:</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s10">
+                        <textarea id="picture_tags" class="materialize-textarea"></textarea>
+                        <label for="picture_tags">Tags:</label>
+                    </div>
+                </div>
+
+                <div class="row file-field input-field col s10">
+                    <div class="btn">
+                        <span>File</span>
+                        <input type="file">
+                      </div>
+                      <div class="file-path-wrapper">
+                        <input class="file-path validate" type="text">
+                      </div>
+                </div>
+            </form> 
+        </div>
+    </div>
+
+    <div id="search">
+        
+    </div>
+
+</body>
+</html>
+
+<script>
+    data = {};
+    data.prototype.init = function (){
+        console.log('hello');
+    }
+
+    data.init();
+</script>
