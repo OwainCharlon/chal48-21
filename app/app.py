@@ -12,7 +12,7 @@ client = pymongo.MongoClient("mongodb+srv://user1:2NvZYRipodUWsipy@cluster1.swpt
 #db = client.nomdb
 #col = db.nomColonne
 
-@app.route("/", methods=["GET"])
+@app.route("/home", methods=["GET"])
 def homepage():
 
     return render_template("index.html")
