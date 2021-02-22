@@ -1,2 +1,3 @@
-# chal48-21
-This repository contains all ressources for our solution to the 2021 Ynov challenge 48h.
+# Install env 
+python -m venv venv 
+pip install -r requirements.txy
