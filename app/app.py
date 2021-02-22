@@ -17,6 +17,14 @@ def homepage():
 
     return render_template("index.html")
 
+@app.route("/home", methods=["POST"])
+def upload():
+    
+    current_dir = os.getcwd()
+    path = current_dir + "\\faces\\"
+    img = request.files['image']
+    img.save(path + 'test.jpg')
+    return 
 
 
 if __name__ == "__main__":
