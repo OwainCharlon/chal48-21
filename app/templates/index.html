@@ -29,17 +29,17 @@
         </div>
     </nav>
 
-    <div id="upload" class="row">   
-        <div class="col s10 offset-s1"> 
+    <div id="upload" class="container"> 
+        
             <form enctype="multipart/form-data" id="myform" action="" method="POST">
 
                 <div class="row">
-                    <div class="input-field col s5">
+                    <div class="input-field col s6">
                         <input placeholder="Nom de l'image" id="picture_name" name="picture_name" type="text" class="validate">
                         <label for="picture_name">Nom de l'image</label>
                     </div>
     
-                    <div class="input-field col s5">
+                    <div class="input-field col s6">
                         <input placeholder="Type d'image" id="picture_type" name="picture_type" type="text" class="validate">
                         <label for="picture_type">Type de l'image</label>
                     </div>
@@ -83,27 +83,27 @@
                 </div>
 
                 <div class="row">
-                    <div class="input-field col s5">
+                    <div class="input-field col s6">
                         <input placeholder="Crédit de la photo" id="picture_author" type="text" class="validate">
                         <label for="picture_author">Crédit de l'image:</label>
                     </div>
     
     
-                    <div class="input-field col s5">
+                    <div class="input-field col s6">
                         <input placeholder="Copyrigth" id="picture_copyright" type="text" class="validate">
                         <label for="picture_copyright">Copyright:</label>
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="input-field col s10">
+                    <div class="input-field col s12">
                         <input placeholder="Date de la photo" id="picture_date" type="text" class="validate">
                         <label for="picture_date">Date de l'image:</label>
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="input-field col s10">
+                    <div class="input-field col s12">
                         <textarea id="picture_tags" class="materialize-textarea"></textarea>
                         <label for="picture_tags">Tags:</label>
                     </div>
@@ -118,10 +118,27 @@
                 </button>
         
             </form> 
-        </div>
+        
     </div>
 
-    <div id="search">
+    <div id="search" class="container">
+
+        <div class="row">
+            <div class="input-field col s4">
+                <input placeholder="Nom de l'image" id="picture_name" name="picture_name" type="text" class="validate">
+                <label for="picture_name">Nom de l'image</label>
+            </div>
+
+            <div class="input-field col s4">
+                <input placeholder="Type d'image" id="picture_type" name="picture_type" type="text" class="validate">
+                <label for="picture_type">Type de l'image</label>
+            </div>
+
+            <div class="input-field col s4">
+                <input placeholder="Type d'image" id="picture_type" name="picture_type" type="text" class="validate">
+                <label for="picture_type">Type de l'image</label>
+            </div>
+        </div>
 
     </div>
 
