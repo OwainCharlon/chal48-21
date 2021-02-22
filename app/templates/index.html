@@ -31,31 +31,24 @@
 
     <div id="upload" class="row">   
         <div class="col s10 offset-s1"> 
-            <form>
+            <form enctype="multipart/form-data" id="myform" action="" method="POST">
 
                 <div class="row">
                     <div class="input-field col s5">
-                        <input placeholder="Nom de l'image" id="picture_name" type="text" class="validate">
+                        <input placeholder="Nom de l'image" id="picture_name" name="picture_name" type="text" class="validate">
                         <label for="picture_name">Nom de l'image</label>
                     </div>
     
                     <div class="input-field col s5">
-                        <input placeholder="Type d'image" id="picture_type" type="text" class="validate">
+                        <input placeholder="Type d'image" id="picture_type" name="picture_type" type="text" class="validate">
                         <label for="picture_type">Type de l'image</label>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="input-field col s10">
-                        <textarea id="picture_description" class="materialize-textarea"></textarea>
-                        <label for="picture_description">Description:</label>
                     </div>
                 </div>
                 
                 <div class="row">
                     <div class="col s2">
                         <label>
-                          <input type="checkbox" id="with_product"/>
+                          <input type="checkbox" name="with_product" id="with_product"/>
                           <span>Avec produit:</span>
                         </label>
                     </div>
@@ -116,18 +109,11 @@
                     </div>
                 </div>
 
-                <div class="row file-field input-field col s10">
-                    <div class="btn">
-                        <span>Image</span>
-                        <input type="file">
-                      </div>
-                      <div class="file-path-wrapper">
-                        <input id="picture_path" class="file-path validate" type="text">
-                      </div>
-                </div>
+                <input type="file" id="picture" name="picture" accept="image/png, image/jpeg">
+               
 
 
-                <button class="btn waves-effect waves-light" name="action" onclick="data.upload()">
+                <button class="btn waves-effect waves-light" type="submit">
                     <i class="material-icons right">Enregistrer</i>
                 </button>
         
@@ -145,52 +131,5 @@
 
 </body>
 </html>
-
-<script>
-    console.log('hello');
-
-    var data = {};
-
-    data.upload = function() {
-
-        var d = {
-            picture_name : $('#picture_name').val(),
-            picture_type : $('#picture_type').val(),
-            picture_description : $('#picture_description').val(),
-            with_product : $('#with_product').is(":checked"),
-            with_human : $('#with_human').is(":checked"),
-            is_instit : $('#is_instit').is(":checked"),
-            is_vertical : $('#is_vertical').is(":checked"),
-            is_limited : $('#is_limited').is(":checked"),
-            picture_author : $('#picture_author').val(),
-            picture_copyright : $('#picture_copyright').val(),
-            picture_date : $('#picture_date').val(),
-            picture_tags : $('#picture_tags').val(),
-            picture_path : $('#picture_path')[0],
-        };
-
-        //To do -> integrité des données.
-        var url = window.location;
-        var base_url = url.protocol + "/" + url.host + "/";
-        console.log(d);
-
-        $.ajax({
-                type: 'POST',
-                dataType: 'json',
-                url: base_url + '/upload',
-                data: d,
-                beforeSend: function(x) {
-                    if( x && x.overrideMimeType ){ x.overrideMimeType("application/j-son;charset=UTF-8"); }
-                },
-                success: function( result ) {
-                    
-                    M.toast({html: 'Un problème a été rencontré lors de l\'enregistrement.', displayLength:3000,  classes: 'rounded red lighten-2'});
-                       
-                },
-                error: function( result ) { 
-                }
-        });
-    };
-    
 
 </script>

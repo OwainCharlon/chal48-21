@@ -12,20 +12,53 @@ client = pymongo.MongoClient("mongodb+srv://user1:2NvZYRipodUWsipy@cluster1.swpt
 #db = client.nomdb
 #col = db.nomColonne
 
-@app.route("/home", methods=["GET"])
+@app.route("/home", methods=["GET", "POST"])
 def homepage():
 
-    return render_template("index.html")
+    if request.method == 'POST':
+        current_dir = os.getcwd()
+        current_path = current_dir + "\\pictures\\"
+        
+        print( request.values.get('picture_type') )
 
-@app.route("/home", methods=["POST"])
+        
+        return render_template("index.html")
+
+    else:
+        return render_template("index.html")
+
+
+@app.route("/upload", methods=["POST"])
 def upload():
     
     current_dir = os.getcwd()
-    path = current_dir + "\\faces\\"
-    img = request.files['image']
-    img.save(path + 'test.jpg')
+    current_path = current_dir + "\\pictures\\"
+
+    img = request.files['picture']
+
+    #To do fonction de rename
+    #name = 
+    img.save(current_path + 'test.jpg')
+
+    #body = request.get_json()
+    
+    #if col.insert_one( body ):
+    #    print('Saved')
+
     return 
 
+@app.route("/search", methods=["GET"])
+def search():
+
+    #Recherche par Nom/Libelléimage -> regex du champ name
+
+    #Recherche par type/image -> regex du champ type image
+
+    #Ensemble de checkBox
+
+    #Nom d'auteur ->regex 
+
+    return
 
 if __name__ == "__main__":
     app.run(debug=True)
