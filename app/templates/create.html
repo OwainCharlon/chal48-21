@@ -88,6 +88,7 @@
         <div class="input-field col s5">
           <input
             placeholder="Crédit de la photo"
+            name="picture_author"
             id="picture_author"
             type="text"
             class="validate"
@@ -98,6 +99,7 @@
         <div class="input-field col s5">
           <input
             placeholder="Copyrigth"
+            name="picture_copyright"
             id="picture_copyright"
             type="text"
             class="validate"
@@ -111,6 +113,7 @@
           <input
             placeholder="Date de la photo"
             id="picture_date"
+            name="picture_date"
             type="date"
             class="validate"
           />
@@ -120,7 +123,15 @@
 
       <div class="row">
         <div class="input-field col s10">
-          <h4>Tags:</h4>
+          <div id='parenttag' name='parenttag'>
+            <div class="input-field col s5" id="tagholder">
+              <input placeholder="Nom du tag" id="tag0" name="tag0" type="text" class="validate" required />
+              <label for="picture_name">Nom du tag</label>
+            </div>
+          </div>
+          <div class="btn waves-effect waves-light" onclick="newTag()">
+            Mettre un tag supplémentaire
+          </div>
         </div>
       </div>
 
@@ -130,4 +141,19 @@
     </form>
   </div>
 </div>
-{% endblock body %} {% block js %}{% endblock %}
+{% endblock body %} 
+
+{% block js %}
+<script>
+var i = 0;
+function newTag() {
+  i++;
+  var iterator = i.toString();
+  var div_start = "<div class=\"input-field col s5\" id=\"tagholder\"><input placeholder=\"Nom du tag\" id=\"tag";
+  var div_middle = "\" name=\"tag"
+  var div_end = "\" type=\"text\" class=\"validate\" required /><label for=\"picture_name\">Nom du tag</label></div>";
+  var final_div = div_start + iterator + div_middle + iterator + div_end;
+  $("#parenttag").append(final_div);
+}
+</script>
+{% endblock %}

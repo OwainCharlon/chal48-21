@@ -25,17 +25,17 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+
 @app.route("/", methods=["GET", "POST"])
 def homepage():
     if request.method == 'POST':
         current_dir = os.getcwd()
         current_path = current_dir + "\\pictures\\"
-        print( request.values.get('picture_type') )
+        print(request.values.get('picture_type'))
         return render_template("index.html")
     else:
         images = [ a for a in col.find() ]
         return render_template("index.html", images=images)
-
 
 
 @app.route("/update/<path>", methods=["GET", "POST"])
@@ -48,57 +48,80 @@ def update(path):
             return redirect(url_for('create'))
         print('ERROR')
 
-@app.route("/create", methods=["GET","POST"])
+
+@app.route("/create", methods=["GET", "POST"])
 def create():
     req = request.form
     if req:
-        picture = req.get("picture")
+        picture = request.files["picture"]
+        current_dir = os.getcwd()
+        path = current_dir + "\\static\\"
+        imgPath = path + secure_filename(picture.filename)
+        picture.save(imgPath)
         pictureName = req.get("picture_name")
         pictureType = req.get("picture_type")
-        
+
         if req.get("with_product") == None:
             pictureWithProduct = False
         else:
             pictureWithProduct = True
         # pictureWithProduct = req.get("with_product")
-        
+
         if req.get("with_human") == None:
             pictureWithHuman = False
         else:
             pictureWithHuman = True
         # pictureWithHuman = req.get("with_human")
-        
+
         if req.get("is_instit") == None:
             pictureInstitutional = False
         else:
             pictureInstitutional = True
         # pictureInstitutional = req.get("is_instit")
-        
+
         if req.get("is_vertical") == None:
             pictureVertical = False
         else:
             pictureVertical = True
-        # pictureVertical = req.get("is_vertical")    
-        
+        # pictureVertical = req.get("is_vertical")
+
         if req.get("is_limited") == None:
             pictureLimited = False
         else:
-            pictureLimited = True    
+            pictureLimited = True
         # pictureLimited = req.get("is_limited")
+        i = 0
+        test = 0
+        tags = []
+        if req.get("tag0") : 
+            while test == 0:
+                tag = "tag" + str(i)
+                if req.get(tag) is not None :
+                    tags.append(req.get(tag))
+                else :
+                    test = 1
+                i += 1
+        print(tags)
+            
         
         pictureCredit = req.get("picture_author")
-        pictureCopyright= req.get("picture_copyright")
-        pictureDate= req.get("picture_date")
-        tags = []
-        print(pictureWithHuman)
+        pictureCopyright = req.get("picture_copyright")
+        pictureDate = req.get("picture_date")
+        insert = {"name": pictureName, "type": pictureType, "path": secure_filename(picture.filename), "with_product": pictureWithProduct,
+                  "with_human": pictureWithHuman, "institutional": pictureInstitutional, "format": pictureVertical,
+                  "credits": pictureCredit, "user_permissions": pictureLimited, "copyright": pictureCopyright,
+                  "end_date": pictureDate, "tags": tags}
+        col.insert_one(insert)
+        print(picture)
     return render_template("create.html")
-    
+
 
 @app.route("/delete/<path>", methods=["GET", "POST"])
 def delete(path):
-    col.delete_one( { "path" : path } )
+    col.delete_one({"path": path})
     message = 'Image has been deleted !'
     return render_template("index.html", message=message)
+
 
 @app.route("/upload", methods=['GET', 'POST'])
 def upload_file():
