@@ -3,6 +3,8 @@ from flask import Flask, redirect, url_for, render_template, request, session, f
 import os
 import pymongo
 
+import ast
+
 from config import DevelopmentConfig
 from werkzeug.utils import secure_filename
 
@@ -31,7 +33,8 @@ def homepage():
         print( request.values.get('picture_type') )
         return render_template("index.html")
     else:
-        return render_template("index.html")
+        images = [ a for a in col.find() ]
+        return render_template("index.html", images=images)
 
 
 
@@ -116,54 +119,67 @@ def upload_file():
 
 @app.route("/search", methods=['GET', 'POST'])
 def search():
-    response = request.json
-    search = []
 
-    filtersDic = {
-            'name':                '{ "name" : {"$regex": \'.*{}.*\' }}',
-            'type':                '{ "type" : {"$regex": \'.*{}.*\' }}',
-            'credits':             '{ "credits" : {"$regex": \'.*{}.*\' }}',
-            'with_product':        '{ "with_product" : {"$eq" :  {} }}',
-            'with_humans':         '{ "with_humans" :  {"$eq" :  {} }}',
-            'institutional':       '{ "institutional" : {"$eq" :  {} }}',
-            'format':              '{ "format" : {"$eq" :   {} }}',
-            'tags':                '{ "tags" :         {"$in" :  {} }}',
+    req = request.form
+
+    if req:
+        
+        filters = {
+            'with_product' : 'true' if req.get("with_product") == 'on' else 'false',
+            'with_human' : 'true' if req.get("with_human") == 'on' else 'false',
+            'institutional' : 'true' if req.get("institutional") == 'on' else 'false',
+            'format' : 'true' if req.get("is_vertical") == 'on' else 'false'
         }
 
-    if 'filters' in response:
-        for key, value in response['filters'].items():
+        if req.get("name") != '':
+            filters['name'] = req.get("name") 
+
+        if req.get("type") != '':
+            filters['type'] = req.get("type") 
+
+        if req.get("credits") != '':
+            filters['credits'] = req.get("credits") 
+
+        if req.get("tags") != '':
+            filters['tags'] = req.get("tags") 
+            print(req.get("tags"))
+            print(type(req.get("tags")))
+        
+        print(filters)
+
+        filtersDic = {
+                'name':                '{ "name" : {"$regex": \'.*{}.*\' }}',
+                'type':                '{ "type" : {"$regex": \'.*{}.*\' }}',
+                'credits':             '{ "credits" : {"$regex": \'.*{}.*\' }}',
+                'tags': '{ "tags" : {"$in" : {} }}',
+                'with_product':        '{ "with_product" : {"$eq" :  {} }}',
+                'with_human':         '{ "with_humans" :  {"$eq" :  {} }}',
+                'institutional':       '{ "institutional" : {"$eq" :  {} }}',
+                'format':              '{ "format" : {"$eq" :   {} }}',
+            }
+
+        search = []
+        for key, value in filters.items():
             if key in filtersDic:
-                newFilter = filtersDic[key].replace ( '{}', str(value) )
-                search.append( ast.literal_eval( newFilter ))
-            else:
-                search = []
+                newFilter = filtersDic[key].replace ( '{}', value )
+                print(newFilter)
+                print(type(newFilter))
+                search.append( ast.literal_eval( str(newFilter) ))
 
-    if len(search):
-        response = [ a for a in col.find({ "$and" : search }, {"_id" : 1}) ]
-
-    else :
-        response = { "output": {
-                "type" : "notify",
-                "description" : "no entities found"
-            }}
-
-        if 'filters' in response:
-            for key, value in response['filters'].items():
-                if key in filtersDic:
-                    newFilter = filtersDic[key].replace ( '{}', str(value) )
-                    search.append( ast.literal_eval( newFilter ))
-                else:
-                    search = []
+        print(search)
 
         if len(search):
-            response = [ a for a in col.find({ "$and" : search }, {"_id" : 1}) ]
+            images = [ a for a in col.find({ "$and" : search }) ]
+            
 
-            return jsonify(response)
+        else:
+            images = [ a for a in col.find() ]
 
-        else :
-            return jsonify("hello")
+        print(images)
 
-    if request.method == 'GET':
+        return render_template("search.html", images=images)
+    
+    else:
         return render_template("search.html")
 
 
