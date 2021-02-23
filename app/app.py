@@ -13,9 +13,11 @@ app = Flask(__name__)
 app.config.from_object(DevelopmentConfig)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-client = pymongo.MongoClient("mongodb+srv://user1:2NvZYRipodUWsipy@cluster1.swpth.mongodb.net/sample_airbnb?retryWrites=true&w=majority")
+client = pymongo.MongoClient(
+    "mongodb+srv://user1:2NvZYRipodUWsipy@cluster1.swpth.mongodb.net/sample_airbnb?retryWrites=true&w=majority")
 db = client.chal48_passion_froid
 col = db.picture
+
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -31,6 +33,58 @@ def homepage():
     else:
         return render_template("index.html")
 
+
+
+@app.route("/update/<path>", methods=["GET", "POST"])
+def update(path):
+    if request.method == 'GET':
+        obj = col.find_one({"path": path})
+        if obj:
+            return render_template("update.html", path=path, obj=obj)
+        elif not obj:
+            return redirect(url_for('create'))
+        print('ERROR')
+
+@app.route("/create", methods=["GET","POST"])
+def create():
+    req = request.form
+    if req:
+        picture = req.get("picture")
+        pictureName = req.get("picture_name")
+        pictureType = req.get("picture_type")
+        
+        if req.get("with_product") == None:
+            pictureWithProduct = False
+        else:
+            pictureWithProduct = True
+        # pictureWithProduct = req.get("with_product")
+        
+        if req.get("with_human") == None:
+            pictureWithHuman = False
+        else:
+            pictureWithHuman = True
+        # pictureWithHuman = req.get("with_human")
+        
+        if req.get("is_instit") == None:
+            pictureInstitutional = False
+        else:
+            pictureInstitutional = True
+        # pictureInstitutional = req.get("is_instit")
+        
+        if req.get("is_vertical") == None:
+            pictureVertical = False
+        else:
+            pictureVertical = True
+        pictureVertical = req.get("is_vertical")
+        pictureLimited = req.get("is_limited")
+        
+        pictureCredit = req.get("picture_author")
+        pictureCopyright= req.get("picture_copyright")
+        pictureDate= req.get("picture_date")
+        tags = []
+        print(picture)
+    return render_template("create.html")
+    
 
 @app.route("/delete/<path>", methods=["GET", "POST"])
 def delete(path):
@@ -58,6 +112,7 @@ def upload_file():
 @app.route("/search", methods=['GET', 'POST'])
 def search():
 
+<<<<<<< HEAD
     if request.method == 'POST':
         response = request.json
         
@@ -72,6 +127,37 @@ def search():
                 'institutional' :       '{ "institutional" : {"$eq" :  {} }}',
                 'format' :              '{ "format" : {"$eq" :   {} }}', 
                 'tags' :                '{ "tags" : {"$in" :  {} }}', 
+=======
+    response = request.json
+    search = []
+
+    filtersDic = {
+            'name':                '{ "name" : {"$regex": \'.*{}.*\' }}',
+            'type':                '{ "type" : {"$regex": \'.*{}.*\' }}',
+            'credits':             '{ "credits" : {"$regex": \'.*{}.*\' }}',
+            'with_product':        '{ "with_product" : {"$eq" :  {} }}',
+            'with_humans':         '{ "with_humans" :  {"$eq" :  {} }}',
+            'institutional':       '{ "institutional" : {"$eq" :  {} }}',
+            'format':              '{ "format" : {"$eq" :   {} }}',
+            'tags':                '{ "tags" :         {"$in" :  {} }}',
+        }
+
+    if 'filters' in response:
+        for key, value in response['filters'].items():
+            if key in filtersDic:
+                newFilter = filtersDic[key].replace ( '{}', str(value) )
+                search.append( ast.literal_eval( newFilter ))
+            else:
+                search = []
+
+    if len(search):
+        response = [ a for a in col.find({ "$and" : search }, {"_id" : 1}) ]
+
+    else :
+        response = { "output": {
+                "type" : "notify",
+                "description" : "no entities found"
+>>>>>>> 316324b5a398f37daa70ba127a2e50347c11caa8
             }
 
         if 'filters' in response:
