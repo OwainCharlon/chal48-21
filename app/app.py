@@ -116,22 +116,6 @@ def upload_file():
 @app.route("/search", methods=['GET', 'POST'])
 def search():
 
-<<<<<<< HEAD
-    if request.method == 'POST':
-        response = request.json
-        
-        search = []
-
-        filtersDic = {
-                'name' :                '{ "name" : {"$regex": \'.*{}.*\' }}',
-                'type' :                '{ "type" : {"$regex": \'.*{}.*\' }}',
-                'credits' :             '{ "credits" : {"$regex": \'.*{}.*\' }}',
-                'with_product' :        '{ "with_product" : {"$eq" :  {} }}', 
-                'with_humans' :         '{ "with_humans" : {"$eq" :  {} }}', 
-                'institutional' :       '{ "institutional" : {"$eq" :  {} }}',
-                'format' :              '{ "format" : {"$eq" :   {} }}', 
-                'tags' :                '{ "tags" : {"$in" :  {} }}', 
-=======
     response = request.json
     search = []
 
@@ -161,7 +145,6 @@ def search():
         response = { "output": {
                 "type" : "notify",
                 "description" : "no entities found"
->>>>>>> 316324b5a398f37daa70ba127a2e50347c11caa8
             }
 
         if 'filters' in response:
