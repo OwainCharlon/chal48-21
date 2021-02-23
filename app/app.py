@@ -115,7 +115,6 @@ def upload_file():
 
 @app.route("/search", methods=['GET', 'POST'])
 def search():
-
     response = request.json
     search = []
 
@@ -145,7 +144,7 @@ def search():
         response = { "output": {
                 "type" : "notify",
                 "description" : "no entities found"
-            }
+            }}
 
         if 'filters' in response:
             for key, value in response['filters'].items():
@@ -163,7 +162,7 @@ def search():
         else :
             return jsonify("hello")
 
-    elif request.method == 'GET':
+    if request.method == 'GET':
         return render_template("search.html")
 
 
