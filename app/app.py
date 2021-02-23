@@ -6,7 +6,7 @@ import pymongo
 from config import DevelopmentConfig
 from werkzeug.utils import secure_filename
 
-UPLOAD_FOLDER = 'static/'
+UPLOAD_FOLDER = 'pic/'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 app = Flask(__name__)
@@ -23,10 +23,16 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-
-@app.route("/", methods=["GET"])
+@app.route("/", methods=["GET", "POST"])
 def homepage():
-    return render_template("index.html")
+    if request.method == 'POST':
+        current_dir = os.getcwd()
+        current_path = current_dir + "\\pictures\\"
+        print( request.values.get('picture_type') )
+        return render_template("index.html")
+    else:
+        return render_template("index.html")
+
 
 
 @app.route("/update/<path>", methods=["GET", "POST"])
@@ -44,6 +50,11 @@ def create():
     return render_template("create.html")
     
 
+@app.route("/delete/<path>", methods=["GET", "POST"])
+def delete(path):
+    col.delete_one( { "path" : path } )
+    message = 'Image has been deleted !'
+    return render_template("index.html", message=message)
 
 @app.route("/upload", methods=['GET', 'POST'])
 def upload_file():
@@ -58,7 +69,7 @@ def upload_file():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return redirect("update/"+file.filename)
+            return redirect(url_for('homepage'))
     return render_template("upload.html")
 
 
@@ -82,24 +93,22 @@ def search():
     if 'filters' in response:
         for key, value in response['filters'].items():
             if key in filtersDic:
-                newFilter = filtersDic[key].replace('{}', str(value))
-                search.append(ast.literal_eval(newFilter))
+                newFilter = filtersDic[key].replace ( '{}', str(value) )
+                search.append( ast.literal_eval( newFilter ))
             else:
                 search = []
 
-        if len(search):
-            response = [ a for a in col.find({
-                "$and" : search
-            }) ]
-            
-        else :
-            response = { "output": {
-                    "type" : "notify",
-                    "description" : "no entities found"
-                }
-            }
+    if len(search):
+        response = [ a for a in col.find({ "$and" : search }, {"_id" : 1}) ]
 
-        return response
+    else :
+        response = { "output": {
+                "type" : "notify",
+                "description" : "no entities found"
+            }
+        }
+            
+    return response
 
 
 if __name__ == "__main__":

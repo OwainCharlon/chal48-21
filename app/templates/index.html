@@ -16,6 +16,10 @@
     </div>
 </nav>
 
+{% if message %}
+<div class='card-panel red darken-1 center-align'> {{message}} </div>
+{% endif %}
+
 <div id="upload" class="row">   
     <div class="col s10 offset-s1"> 
         <form enctype="multipart/form-data" id="myform" action="" method="POST">
