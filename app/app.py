@@ -87,6 +87,7 @@ def create():
         pictureCopyright= req.get("picture_copyright")
         pictureDate= req.get("picture_date")
         tags = []
+        print(pictureWithHuman)
     return render_template("create.html")
     
 
