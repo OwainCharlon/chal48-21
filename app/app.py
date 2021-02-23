@@ -52,7 +52,7 @@ def create():
     if req:
         picture = request.files["picture"]
         current_dir = os.getcwd()
-        path = current_dir + "\\app\\static\\"
+        path = current_dir + "\\static\\"
         imgPath = path + secure_filename(picture.filename)
         picture.save(imgPath)
         pictureName = req.get("picture_name")
@@ -87,15 +87,27 @@ def create():
         else:
             pictureLimited = True
         # pictureLimited = req.get("is_limited")
-
+        i = 0
+        test = 0
+        tags = []
+        if req.get("tag0") : 
+            while test == 0:
+                tag = "tag" + str(i)
+                if req.get(tag) is not None :
+                    tags.append(req.get(tag))
+                else :
+                    test = 1
+                i += 1
+        print(tags)
+            
+        
         pictureCredit = req.get("picture_author")
         pictureCopyright = req.get("picture_copyright")
         pictureDate = req.get("picture_date")
-        pictureTags = []
         insert = {"name": pictureName, "type": pictureType, "path": secure_filename(picture.filename), "with_product": pictureWithProduct,
                   "with_human": pictureWithHuman, "institutional": pictureInstitutional, "format": pictureVertical,
                   "credits": pictureCredit, "user_permissions": pictureLimited, "copyright": pictureCopyright,
-                  "end_date": pictureDate, "tags": pictureTags}
+                  "end_date": pictureDate, "tags": tags}
         col.insert_one(insert)
         print(picture)
     return render_template("create.html")

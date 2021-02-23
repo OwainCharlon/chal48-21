@@ -123,15 +123,14 @@
 
       <div class="row">
         <div class="input-field col s10">
-          <h4>Tags:</h4>
-          <div id='parent'>
+          <div id='parenttag' name='parenttag'>
             <div class="input-field col s5" id="tagholder">
-              <input placeholder="Nom du tag" id="tag" name="tag" type="text" class="validate" required />
+              <input placeholder="Nom du tag" id="tag0" name="tag0" type="text" class="validate" required />
               <label for="picture_name">Nom du tag</label>
-              <div class="btn waves-effect waves-light" onclick="newTag">
-                Mettre un tag supplémentaire
-              </div>
             </div>
+          </div>
+          <div class="btn waves-effect waves-light" onclick="newTag()">
+            Mettre un tag supplémentaire
           </div>
         </div>
       </div>
@@ -146,9 +145,15 @@
 
 {% block js %}
 <script>
+var i = 0;
 function newTag() {
-  newDiv = $("#tagholder").clone()
-  newDiv.append("#parent");
+  i++;
+  var iterator = i.toString();
+  var div_start = "<div class=\"input-field col s5\" id=\"tagholder\"><input placeholder=\"Nom du tag\" id=\"tag";
+  var div_middle = "\" name=\"tag"
+  var div_end = "\" type=\"text\" class=\"validate\" required /><label for=\"picture_name\">Nom du tag</label></div>";
+  var final_div = div_start + iterator + div_middle + iterator + div_end;
+  $("#parenttag").append(final_div);
 }
 </script>
 {% endblock %}
