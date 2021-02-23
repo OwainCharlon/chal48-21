@@ -75,14 +75,18 @@ def create():
             pictureVertical = False
         else:
             pictureVertical = True
-        pictureVertical = req.get("is_vertical")
-        pictureLimited = req.get("is_limited")
+        # pictureVertical = req.get("is_vertical")    
+        
+        if req.get("is_limited") == None:
+            pictureLimited = False
+        else:
+            pictureLimited = True    
+        # pictureLimited = req.get("is_limited")
         
         pictureCredit = req.get("picture_author")
         pictureCopyright= req.get("picture_copyright")
         pictureDate= req.get("picture_date")
         tags = []
-        print(picture)
     return render_template("create.html")
     
 
