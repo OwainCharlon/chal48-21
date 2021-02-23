@@ -88,6 +88,7 @@
         <div class="input-field col s5">
           <input
             placeholder="Crédit de la photo"
+            name="picture_author"
             id="picture_author"
             type="text"
             class="validate"
@@ -98,6 +99,7 @@
         <div class="input-field col s5">
           <input
             placeholder="Copyrigth"
+            name="picture_copyright"
             id="picture_copyright"
             type="text"
             class="validate"
@@ -111,6 +113,7 @@
           <input
             placeholder="Date de la photo"
             id="picture_date"
+            name="picture_date"
             type="date"
             class="validate"
           />
@@ -121,6 +124,15 @@
       <div class="row">
         <div class="input-field col s10">
           <h4>Tags:</h4>
+          <div id='parent'>
+            <div class="input-field col s5" id="tagholder">
+              <input placeholder="Nom du tag" id="tag" name="tag" type="text" class="validate" required />
+              <label for="picture_name">Nom du tag</label>
+              <div class="btn waves-effect waves-light" onclick="newTag">
+                Mettre un tag supplémentaire
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -130,4 +142,13 @@
     </form>
   </div>
 </div>
-{% endblock body %} {% block js %}{% endblock %}
+{% endblock body %} 
+
+{% block js %}
+<script>
+function newTag() {
+  newDiv = $("#tagholder").clone()
+  newDiv.append("#parent");
+}
+</script>
+{% endblock %}
