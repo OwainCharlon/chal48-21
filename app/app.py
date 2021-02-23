@@ -5,7 +5,7 @@ import pymongo
 
 import ast
 
-from config import DevelopmentConfig
+from config import BaseConfig
 from werkzeug.utils import secure_filename
 
 UPLOAD_FOLDER = 'pic/'
