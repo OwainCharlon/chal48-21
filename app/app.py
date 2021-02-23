@@ -47,6 +47,42 @@ def update(path):
 
 @app.route("/create", methods=["GET","POST"])
 def create():
+    req = request.form
+    if req:
+        picture = req.get("picture")
+        pictureName = req.get("picture_name")
+        pictureType = req.get("picture_type")
+        
+        if req.get("with_product") == None:
+            pictureWithProduct = False
+        else:
+            pictureWithProduct = True
+        # pictureWithProduct = req.get("with_product")
+        
+        if req.get("with_human") == None:
+            pictureWithHuman = False
+        else:
+            pictureWithHuman = True
+        # pictureWithHuman = req.get("with_human")
+        
+        if req.get("is_instit") == None:
+            pictureInstitutional = False
+        else:
+            pictureInstitutional = True
+        # pictureInstitutional = req.get("is_instit")
+        
+        if req.get("is_vertical") == None:
+            pictureVertical = False
+        else:
+            pictureVertical = True
+        pictureVertical = req.get("is_vertical")
+        pictureLimited = req.get("is_limited")
+        
+        pictureCredit = req.get("picture_author")
+        pictureCopyright= req.get("picture_copyright")
+        pictureDate= req.get("picture_date")
+        tags = []
+        print(picture)
     return render_template("create.html")
     
 
