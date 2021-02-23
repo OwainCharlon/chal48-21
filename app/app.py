@@ -35,6 +35,7 @@ def homepage():
         return render_template("index.html")
     else:
         images = [ a for a in col.find() ]
+        print(images)
         return render_template("index.html", images=images)
 
 
@@ -165,40 +166,42 @@ def search():
 
         if req.get("tags") != '':
             filters['tags'] = req.get("tags") 
-            print(req.get("tags"))
-            print(type(req.get("tags")))
-        
-        print(filters)
 
-        filtersDic = {
-                'name':                '{ "name" : {"$regex": \'.*{}.*\' }}',
-                'type':                '{ "type" : {"$regex": \'.*{}.*\' }}',
-                'credits':             '{ "credits" : {"$regex": \'.*{}.*\' }}',
-                'tags': '{ "tags" : {"$in" : {} }}',
-                'with_product':        '{ "with_product" : {"$eq" :  {} }}',
-                'with_human':         '{ "with_humans" :  {"$eq" :  {} }}',
-                'institutional':       '{ "institutional" : {"$eq" :  {} }}',
-                'format':              '{ "format" : {"$eq" :   {} }}',
-            }
+        search_str = '['
 
-        search = []
-        for key, value in filters.items():
-            if key in filtersDic:
-                newFilter = filtersDic[key].replace ( '{}', value )
-                print(newFilter)
-                print(type(newFilter))
-                search.append( ast.literal_eval( str(newFilter) ))
+        if 'name' in filters:
+            search_str += '{ "name" : {"$regex": \'.*' + filters['name'] + '.*\' }},'
 
-        print(search)
-
-        if len(search):
-            images = [ a for a in col.find({ "$and" : search }) ]
+        if 'type' in filters:
+            search_str += '{ "type" : {"$regex": \'.*' + filters['type'] + '.*\' }},'
             
+        if 'credits' in filters:
+            search_str += '{ "credits" : {"$regex": \'.*' + filters["credits"] + '.*\' }},'
+            
+        if 'with_human' in filters :
+            search_str += '{ "with_humans" :  {"$eq" :'+ filters["with_human"] +'}},'
+            
+        if "with_product" in filters:
+             search_str += '{ "with_product" : {"$eq" :' + filters["with_product"] + '}},'
+             
+        if "format" in filters :
+            search_str += '{ "format" : {"$eq" :' + filters["format"] + '}},'
+             
+        if "institutional" in filters:
+             search_str += '{ "institutional" : {"$eq" :' + filters["institutional"] + '}},'
+             
+        if "tags" in filters :
+            search_str += '{ "tags" : {"$in" : [ ' + filters["tags"] + ' ] }},'
+        
+        search_str += ']'
 
-        else:
-            images = [ a for a in col.find() ]
 
-        print(images)
+        
+        query = 'col.find({ "$and" : ' + search_str + '})'
+        
+        collection_cursor = eval(query)
+
+        images = [ a for a in collection_cursor ]
 
         return render_template("search.html", images=images)
     

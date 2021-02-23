@@ -61,11 +61,19 @@
         <i class="material-icons right">Rechercher</i>
     </button>
     </form>
-    {% if images %}
-        {% for img in images %}
-        <p>{{ img.name }}</p>
-        {% endfor %}
-    {% endif %}
+    <div class="row">
+        {%for image in images%}
+        <div class="card col s3">
+          <div class="card-image">
+            <img src="../static/{{image.path}}" alt="">
+            <span class="card-title">{{image.name}}</span>
+          </div>
+          <div class="card-content">
+            <p>{{image.type}}</p>
+          </div>  
+        </div>
+        {%endfor%}
+    </div>
 
 </div>
 
